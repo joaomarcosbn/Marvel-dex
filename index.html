@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Marvel Characters</title>
+    <link
+      rel="icon"
+      href="assets/images/tva-logo-png_seeklogo-407823-removebg-preview.png"
+      type="image/x-icon"
+    />
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.2.0/crypto-js.min.js"></script>
+    <link rel="stylesheet" href="assets/css/global.css" />
+    <link rel="stylesheet" href="assets/css/nav.css" />
+    <link rel="stylesheet" href="assets/css/main.css" />
+  </head>
+  <body>
+    <header>
+      <img
+        src="assets/images/marvel-entertainment-logo-png-701751694711701sy4mtyexji-removebg-preview-removebg-preview.png"
+        alt="Logo Marvel"
+        class="logo"
+      />
+      <div class="sign">
+        <button>Sign Up</button>
+        <button>Register</button>
+      </div>
+    </header>
+
+    <section class="container hero">
+      <div class="character-display" id="characterDisplay">
+        <div class="character-skeleton-loader active" id="mainCharacterLoader">
+          <div class="skeleton-circle"></div>
+          <div class="skeleton-line-long"></div>
+          <div class="skeleton-line-short"></div>
+        </div>
+
+        <div class="character-content hidden" id="mainCharacterContent">
+          <img id="marvelCharacterImage" src="" alt="Personagem Marvel" />
+          <p id="marvelCharacterName"></p>
+          <button id="nextCharacterButton">Próximo Personagem</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="search-section">
+      <div class="search-bar">
+        <input
+          type="text"
+          id="characterSearchInput"
+          placeholder="Buscar personagem..."
+        />
+        <button id="searchButton">Buscar</button>
+      </div>
+      <div id="searchResults" class="character-grid"></div>
+    </section>
+
+    <div id="characterModal" class="modal">
+      <div class="modal-content">
+        <span class="close-button">&times;</span>
+        <h2 id="modalCharacterName"></h2>
+        <img
+          id="modalCharacterImage"
+          src=""
+          alt="Imagem do Personagem"
+          class="modal-image"
+        />
+        <p id="modalCharacterDescription"></p>
+        <div id="modalCharacterComics" class="modal-section">
+          <h3>Quadrinhos:</h3>
+          <ul id="modalComicsList"></ul>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.2.0/crypto-js.min.js"></script>
+    <script src="assets/js/script.js"></script>
+  </body>
+</html>

@@ -1,0 +1,571 @@
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.character-display {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #333;
+  border-radius: 2rem;
+  padding: 30px 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+  min-height: auto;
+  width: 300px;
+  max-width: 90%;
+  position: relative;
+  margin-top: 50px;
+  text-align: center;
+}
+
+.character-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.character-display img {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid red;
+  margin-bottom: 15px;
+}
+
+.character-display p {
+  color: white;
+  font-size: 1.6rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+#nextCharacterButton {
+  background-color: red;
+  border: none;
+  color: white;
+  font-size: 1rem;
+  padding: 8px 18px;
+  border-radius: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#nextCharacterButton:hover {
+  background-color: #ff3333;
+}
+
+.character-skeleton-loader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  gap: 15px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.character-skeleton-loader.active {
+  opacity: 1;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.search-section {
+  padding: 40px 20px;
+  text-align: center;
+  margin-top: 40px;
+}
+
+.search-bar {
+  margin-bottom: 30px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+#characterSearchInput {
+  padding: 12px 15px;
+  width: 400px;
+  max-width: 80%;
+  border-radius: 25px;
+  border: 2px solid red;
+  background-color: #222;
+  color: white;
+  font-size: 1rem;
+}
+
+#characterSearchInput::placeholder {
+  color: #aaa;
+}
+
+#searchButton {
+  background-color: red;
+  border: none;
+  color: white;
+  font-size: 1.1rem;
+  padding: 12px 25px;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#searchButton:hover {
+  background-color: #ff3333;
+}
+
+.character-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 20px;
+  justify-items: center;
+  margin-top: 20px;
+  padding: 0 20px;
+}
+
+.character-card {
+  background-color: #333;
+  border-radius: 1rem;
+  padding: 15px;
+  text-align: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  transition: transform 0.2s ease;
+  cursor: pointer;
+  width: 100%;
+  max-width: 200px;
+}
+
+.character-card:hover {
+  transform: translateY(-5px);
+}
+
+.character-card img {
+  width: 150px;
+  height: 150px;
+  border-radius: 10px;
+  object-fit: cover;
+  margin-bottom: 10px;
+}
+
+.character-card p {
+  color: white;
+  font-size: 1.1rem;
+  font-weight: bold;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1001;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.8);
+  justify-content: center;
+  align-items: center;
+  padding-top: 50px;
+}
+
+.modal-content {
+  background-color: #222;
+  margin: auto;
+  padding: 30px;
+  border: 1px solid #888;
+  border-radius: 1rem;
+  width: 80%;
+  max-width: 700px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.6);
+  position: relative;
+  color: white;
+  text-align: center;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.close-button {
+  color: #aaa;
+  position: absolute;
+  top: 15px;
+  right: 25px;
+  font-size: 30px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.close-button:hover,
+.close-button:focus {
+  color: red;
+  text-decoration: none;
+}
+
+.modal-image {
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 20px;
+  border: 3px solid red;
+}
+
+#modalCharacterName {
+  font-size: 2.2rem;
+  font-weight: bold;
+  margin-bottom: 15px;
+  color: red;
+}
+
+#modalCharacterDescription {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.modal-section {
+  margin-top: 25px;
+  border-top: 1px solid #444;
+  padding-top: 20px;
+}
+
+.modal-section h3 {
+  color: red;
+  font-size: 1.5rem;
+  margin-bottom: 15px;
+}
+
+.modal-section ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  text-align: left;
+}
+
+.modal-section ul li {
+  background-color: #333;
+  margin-bottom: 8px;
+  padding: 10px 15px;
+  border-radius: 8px;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.modal-section ul li:before {
+  content: "📖";
+  margin-right: 5px;
+}
+
+@media (min-width: 1025px) {
+  .container {
+    padding: 30px 50px;
+  }
+
+  .character-display {
+    width: 350px;
+    padding: 40px 30px;
+  }
+
+  .character-display img {
+    width: 220px;
+    height: 220px;
+  }
+
+  .character-display p {
+    font-size: 1.8rem;
+  }
+
+  #nextCharacterButton {
+    font-size: 1.1rem;
+    padding: 10px 20px;
+  }
+
+  .search-section {
+    padding: 60px 50px;
+  }
+
+  #characterSearchInput {
+    width: 500px;
+    font-size: 1.1rem;
+    padding: 15px 20px;
+  }
+
+  #searchButton {
+    font-size: 1.2rem;
+    padding: 15px 30px;
+  }
+
+  .character-grid {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 25px;
+    max-width: 1200px;
+    margin: 20px auto 0 auto;
+  }
+
+  .character-card {
+    max-width: 220px;
+  }
+
+  .character-card img {
+    width: 170px;
+    height: 170px;
+  }
+
+  .character-card p {
+    font-size: 1.2rem;
+  }
+
+  .modal-content {
+    max-width: 800px;
+    padding: 40px;
+  }
+
+  .modal-image {
+    width: 200px;
+    height: 200px;
+  }
+
+  #modalCharacterName {
+    font-size: 2.5rem;
+  }
+
+  #modalCharacterDescription {
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 1024px) and (min-width: 769px) {
+  .character-display {
+    width: 280px;
+    padding: 25px 15px;
+  }
+
+  .character-display img {
+    width: 180px;
+    height: 180px;
+  }
+
+  .character-display p {
+    font-size: 1.5rem;
+  }
+
+  #nextCharacterButton {
+    font-size: 0.95rem;
+    padding: 7px 16px;
+  }
+
+  #characterSearchInput {
+    width: 350px;
+    max-width: 70%;
+  }
+
+  .character-grid {
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 15px;
+  }
+
+  .character-card {
+    max-width: 180px;
+  }
+
+  .character-card img {
+    width: 130px;
+    height: 130px;
+  }
+
+  .character-card p {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 15px;
+  }
+
+  .character-display {
+    margin-top: 30px;
+    padding: 20px 15px;
+    width: 95%;
+    max-width: 350px;
+  }
+
+  .character-display img {
+    width: 160px;
+    height: 160px;
+    margin-bottom: 10px;
+  }
+
+  .character-display p {
+    font-size: 1.4rem;
+    margin-bottom: 15px;
+  }
+
+  #nextCharacterButton {
+    font-size: 0.9rem;
+    padding: 6px 15px;
+  }
+
+  .search-section {
+    padding: 20px 15px;
+    margin-top: 20px;
+  }
+
+  .search-bar {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  #characterSearchInput {
+    width: 90%;
+    max-width: 300px;
+    font-size: 0.95rem;
+    padding: 10px 12px;
+  }
+
+  #searchButton {
+    width: 90%;
+    max-width: 150px;
+    font-size: 1rem;
+    padding: 10px 20px;
+  }
+
+  .character-grid {
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 10px;
+    padding: 0 10px;
+  }
+
+  .character-card {
+    padding: 10px;
+    max-width: 160px;
+  }
+
+  .character-card img {
+    width: 120px;
+    height: 120px;
+    margin-bottom: 8px;
+  }
+
+  .character-card p {
+    font-size: 0.95rem;
+  }
+
+  .modal-content {
+    width: 90%;
+    padding: 20px;
+    max-height: 85vh;
+  }
+
+  .modal-image {
+    width: 150px;
+    height: 150px;
+    margin-bottom: 15px;
+  }
+
+  #modalCharacterName {
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+  }
+
+  #modalCharacterDescription {
+    font-size: 1rem;
+    line-height: 1.5;
+    margin-bottom: 15px;
+  }
+
+  .modal-section {
+    margin-top: 20px;
+    padding-top: 15px;
+  }
+
+  .modal-section h3 {
+    font-size: 1.3rem;
+    margin-bottom: 10px;
+  }
+
+  .modal-section ul li {
+    padding: 8px 12px;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .character-display {
+    padding: 15px 10px;
+    margin-top: 20px;
+  }
+
+  .character-display img {
+    width: 120px;
+    height: 120px;
+  }
+
+  .character-display p {
+    font-size: 1.2rem;
+  }
+
+  #nextCharacterButton {
+    font-size: 0.85rem;
+    padding: 5px 10px;
+  }
+
+  #characterSearchInput {
+    max-width: 250px;
+  }
+
+  #searchButton {
+    max-width: 120px;
+  }
+
+  .character-grid {
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 8px;
+  }
+
+  .character-card img {
+    width: 100px;
+    height: 100px;
+  }
+
+  .character-card p {
+    font-size: 0.9rem;
+  }
+
+  .modal-content {
+    padding: 15px;
+  }
+
+  .modal-image {
+    width: 100px;
+    height: 100px;
+  }
+
+  #modalCharacterName {
+    font-size: 1.5rem;
+  }
+
+  #modalCharacterDescription {
+    font-size: 0.9rem;
+  }
+
+  .modal-section h3 {
+    font-size: 1.1rem;
+  }
+
+  .modal-section ul li {
+    padding: 6px 10px;
+    font-size: 0.85rem;
+  }
+}
