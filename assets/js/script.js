@@ -1,6 +1,6 @@
-const BACKEND_URL = "http://localhost:3000/api";
+const BACKEND_URL = "http://localhost:3000/api"; // Altere para a URL do seu servidor em produção
 
-const BASE_URL = "https://gateway.marvel.com/v1/public/characters";
+const BASE_URL = "https://gateway.marvel.com/v1/public/characters"; // Ainda pode ser útil para referência, mas as chamadas serão via backend
 
 const marvelCharacterImage = document.getElementById("marvelCharacterImage");
 const marvelCharacterName = document.getElementById("marvelCharacterName");
@@ -24,10 +24,11 @@ const modalComicsList = document.getElementById("modalComicsList");
 
 let currentMainCharacterId = null;
 
-function generateMarvelHash(ts, privateKey, publicKey) {
-  const hashString = ts + privateKey + publicKey;
-  return CryptoJS.MD5(hashString).toString();
-}
+// A função generateMarvelHash não é mais necessária no frontend, pois o backend fará isso.
+// function generateMarvelHash(ts, privateKey, publicKey) {
+//   const hashString = ts + privateKey + publicKey;
+//   return CryptoJS.MD5(hashString).toString();
+// }
 
 function showMainCharacterLoader() {
   mainCharacterLoader.classList.add("active");
@@ -42,55 +43,17 @@ function hideMainCharacterLoader() {
 async function fetchRandomMarvelCharacter() {
   showMainCharacterLoader();
 
-  const ts = new Date().getTime().toString();
-  const hash = generateMarvelHash(ts, PRIVATE_KEY, PUBLIC_KEY);
-
   try {
-    const paramsTotal = new URLSearchParams({
-      ts: ts,
-      apikey: PUBLIC_KEY,
-      hash: hash,
-      limit: 1,
-    });
-
-    const urlTotal = `${BASE_URL}?${paramsTotal.toString()}`;
-    const responseTotal = await fetch(urlTotal);
-    if (!responseTotal.ok) {
+    // Chama a nova rota no seu backend
+    const response = await fetch(`${BACKEND_URL}/random-character`);
+    if (!response.ok) {
       throw new Error(
-        `Erro HTTP ao buscar total: ${responseTotal.status} ${responseTotal.statusText}`
+        `Erro HTTP ao buscar personagem aleatório: ${response.status} ${response.statusText}`
       );
     }
-    const dataTotal = await responseTotal.json();
-    const totalCharacters = dataTotal.data.total;
+    const character = await response.json();
 
-    if (totalCharacters === 0) {
-      console.error("Nenhum personagem encontrado na API.");
-      marvelCharacterName.textContent = "Nenhum personagem encontrado.";
-      hideMainCharacterLoader();
-      return;
-    }
-
-    const randomOffset = Math.floor(Math.random() * totalCharacters);
-
-    const paramsRandom = new URLSearchParams({
-      ts: ts,
-      apikey: PUBLIC_KEY,
-      hash: hash,
-      offset: randomOffset,
-      limit: 1,
-    });
-
-    const urlRandom = `${BASE_URL}?${paramsRandom.toString()}`;
-    const responseRandom = await fetch(urlRandom);
-    if (!responseRandom.ok) {
-      throw new Error(
-        `Erro HTTP ao buscar personagem: ${responseRandom.status} ${responseRandom.statusText}`
-      );
-    }
-    const dataRandom = await responseRandom.json();
-
-    if (dataRandom.data.results && dataRandom.data.results.length > 0) {
-      const character = dataRandom.data.results[0];
+    if (character) {
       const characterName = character.name;
       const thumbnailUrl = character.thumbnail.path;
       const thumbnailExtension = character.thumbnail.extension;
@@ -101,10 +64,8 @@ async function fetchRandomMarvelCharacter() {
       marvelCharacterName.textContent = characterName;
       currentMainCharacterId = character.id;
     } else {
-      console.warn(
-        "Nenhum personagem encontrado com o offset aleatório. Tentando novamente..."
-      );
-      fetchRandomMarvelCharacter();
+      console.warn("Nenhum personagem encontrado pelo backend.");
+      marvelCharacterName.textContent = "Nenhum personagem encontrado.";
     }
   } catch (error) {
     console.error("Ocorreu um erro ao buscar o personagem da Marvel:", error);
@@ -119,20 +80,13 @@ async function searchMarvelCharacters(searchTerm) {
   searchResultsContainer.innerHTML =
     '<p style="color: white;">Carregando resultados...</p>';
 
-  const ts = new Date().getTime().toString();
-  const hash = generateMarvelHash(ts, PRIVATE_KEY, PUBLIC_KEY);
-
   try {
-    const params = new URLSearchParams({
-      ts: ts,
-      apikey: PUBLIC_KEY,
-      hash: hash,
-      nameStartsWith: searchTerm,
-      limit: 20,
-    });
-
-    const url = `${BASE_URL}?${params.toString()}`;
-    const response = await fetch(url);
+    // Chama a nova rota de busca no seu backend
+    const response = await fetch(
+      `${BACKEND_URL}/characters/search?searchTerm=${encodeURIComponent(
+        searchTerm
+      )}`
+    );
 
     if (!response.ok) {
       throw new Error(
@@ -140,8 +94,7 @@ async function searchMarvelCharacters(searchTerm) {
       );
     }
 
-    const data = await response.json();
-    const characters = data.data.results;
+    const characters = await response.json();
 
     searchResultsContainer.innerHTML = "";
 
@@ -186,43 +139,25 @@ async function openCharacterModal(characterId) {
   modalCharacterDescription.textContent = "Carregando descrição...";
   modalComicsList.innerHTML = "";
 
-  const ts = new Date().getTime().toString();
-  const hash = generateMarvelHash(ts, PRIVATE_KEY, PUBLIC_KEY);
-
   try {
-    const paramsCharacter = new URLSearchParams({
-      ts: ts,
-      apikey: PUBLIC_KEY,
-      hash: hash,
-    });
-    const urlCharacter = `${BASE_URL}/${characterId}?${paramsCharacter.toString()}`;
-    const responseCharacter = await fetch(urlCharacter);
-    const dataCharacter = await responseCharacter.json();
+    // Chama a nova rota para detalhes do personagem no seu backend
+    const response = await fetch(`${BACKEND_URL}/character/${characterId}`);
+    const data = await response.json();
 
-    if (!responseCharacter.ok || !dataCharacter.data.results.length) {
+    if (!response.ok || !data.character) {
       throw new Error(`Personagem com ID ${characterId} não encontrado.`);
     }
 
-    const character = dataCharacter.data.results[0];
+    const { character, comics } = data;
+
     modalCharacterName.textContent = character.name;
     modalCharacterImage.src = `${character.thumbnail.path}.${character.thumbnail.extension}`;
     modalCharacterImage.alt = `Imagem de ${character.name}`;
     modalCharacterDescription.textContent =
       character.description || "Nenhuma descrição disponível.";
 
-    const paramsComics = new URLSearchParams({
-      ts: ts,
-      apikey: PUBLIC_KEY,
-      hash: hash,
-      limit: 10,
-      orderBy: "-onsaleDate",
-    });
-    const urlComics = `${BASE_URL}/${characterId}/comics?${paramsComics.toString()}`;
-    const responseComics = await fetch(urlComics);
-    const dataComics = await responseComics.json();
-
-    if (dataComics.data.results && dataComics.data.results.length > 0) {
-      dataComics.data.results.forEach((comic) => {
+    if (comics && comics.length > 0) {
+      comics.forEach((comic) => {
         const listItem = document.createElement("li");
         listItem.textContent = comic.title;
         modalComicsList.appendChild(listItem);
