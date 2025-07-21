@@ -1,5 +1,4 @@
-const PUBLIC_KEY = "fbc69ea7b8bb058feae865c00fcb40d2";
-const PRIVATE_KEY = "97c2d42dde81df838665b7f4d5dc0f4d0425b852";
+const BACKEND_URL = "http://localhost:3000/api";
 
 const BASE_URL = "https://gateway.marvel.com/v1/public/characters";
 
